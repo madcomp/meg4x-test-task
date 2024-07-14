@@ -16,15 +16,15 @@ export class PlayerViewModel {
         return this.playerModel.currency;
     }
 
-    public spendCurrency(amount: number) {
+    spendCurrency(amount: number) {
         this.playerModel.currency = Math.max(0, this.playerModel.currency - amount);
     }
 
-    public get subject() {
+    get subject() {
         return this.innerSubject.asObservable();
     }
 
-    notify() {
+    private notify() {
         this.innerSubject.next(this);
     }
 }

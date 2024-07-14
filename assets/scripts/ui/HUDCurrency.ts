@@ -8,13 +8,11 @@ export class HUDCurrency extends Component {
     @property(Label)
     private labelCurrency!: Label;
 
-    private playerViewModel!: PlayerViewModel;
-
     init(playerViewModel: PlayerViewModel) {
         playerViewModel.subject.subscribe(this.refresh.bind(this));
     }
 
-    refresh(playerViewModel: PlayerViewModel) {
+    private refresh(playerViewModel: PlayerViewModel) {
         this.labelCurrency.string = playerViewModel.currency.toString();
     }
 }

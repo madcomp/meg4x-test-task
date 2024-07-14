@@ -1,17 +1,19 @@
-import { _decorator, Component, JsonAsset, Input, input, EventKeyboard, KeyCode } from 'cc';
+import { _decorator, Component, Input, input, EventKeyboard, KeyCode } from 'cc';
 import { PlayerModel } from './player/PlayerModel';
 import { PlayerViewModel } from './player/PlayerViewModel';
 import { HUDCurrency } from './ui/HUDCurrency';
+import { DataLoader } from './data/DataLoader';
+import { DataToLoad } from './data/DataToLoad';
 const { ccclass, property } = _decorator;
 
 @ccclass('MainViewModel')
 export class MainViewModel extends Component {
 
+    @property(DataToLoad)
+    private dataToLoad!: DataToLoad;
+
     @property(HUDCurrency)
     private hudCurrency!: HUDCurrency;
-
-    @property(JsonAsset)
-    private playerJson!: JsonAsset;
 
     private playerModel! : PlayerModel;
     private playerViewModel! : PlayerViewModel;
@@ -31,9 +33,9 @@ export class MainViewModel extends Component {
     }
 
     start() {
-        const playerData = this.playerJson.json!;
-        const playerCurrency = playerData.state?.currency ?? 0;
-        this.playerModel = new PlayerModel(playerCurrency);
+        let dataLoader = new DataLoader();
+        dataLoader.load(this.dataToLoad);
+        this.playerModel = new PlayerModel(dataLoader.playerCurrency);
 
         this.playerViewModel = new PlayerViewModel(this.playerModel);
         this.hudCurrency.init(this.playerViewModel);

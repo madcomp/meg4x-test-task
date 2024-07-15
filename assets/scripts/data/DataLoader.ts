@@ -1,8 +1,9 @@
-import { JsonAsset } from "cc";
-import { BuildingInfoHireTower } from "../building/BuildingInfoHireTower";
-import { BuildingInfos } from "../building/BuildingInfos";
-import { PlayerState } from "../player/PlayerState";
 import { BuildingIds } from "../Constants";
+import { BuildingInfos } from "../building/BuildingInfos";
+import { BuildingInfoHireTower } from "../building/hireTower/BuildingInfoHireTower";
+import { JsonAsset } from "cc";
+import { PlayerState } from "../player/PlayerState";
+import { Utils } from "../Utils";
 
 export class DataLoader {
 
@@ -19,11 +20,12 @@ export class DataLoader {
                     building.name,
                     building.description,
                     building.cost,
+                    Utils.objectToVec3(building.position),
                     building.hireSlots
                 );
             }
         }
-        if (buildingInfoHireTower == null)
+        if (!buildingInfoHireTower)
         {
             throw new Error("No data for ${BuildingIds.HireTower} building in json file.");
         }

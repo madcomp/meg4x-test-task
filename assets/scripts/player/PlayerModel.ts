@@ -1,22 +1,19 @@
 import { BehaviorSubject } from 'rxjs';
-import { BuildingInfos } from '../building/BuildingInfos';
-import { BuildingInfo } from '../building/BuildingInfo';
-import { BuildingModel } from '../building/BuildingModel';
+import { Factory } from '../Factory';
 import { PlayerState } from './PlayerState';
-import { BuildingModelHireTower } from '../building/BuildingModelHireTower';
-import { ModelFactory } from '../factories/ModelFactory';
+import { IBuildingModel } from '../building/IBuildingModel';
 
 export class PlayerModel {
     
     private currencySubject: BehaviorSubject<number>;
-    readonly buildingModels: BuildingModel<BuildingInfo>[];
+    readonly buildingModels: IBuildingModel[];
 
-    constructor(playerState: PlayerState, modelFactory: ModelFactory) {
+    constructor(playerState: PlayerState, factory: Factory) {
         this.currencySubject = new BehaviorSubject<number>(playerState.currency);
         this.buildingModels = [];
         for (var buildingId of playerState.buildingIds)
         {
-            let buildingModel = modelFactory.createBuildingModel(buildingId);
+            let buildingModel = factory.createBuildingModel(buildingId);
             if (buildingModel != null)
             {
                 this.buildingModels.push(buildingModel);

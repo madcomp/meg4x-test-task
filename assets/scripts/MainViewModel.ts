@@ -1,10 +1,10 @@
-import { _decorator, Component, Input, input, EventKeyboard, KeyCode } from 'cc';
+import { _decorator, Component, Input, input, EventKeyboard, KeyCode, Node } from 'cc';
+import { BuildingPrefabs } from './building/BuildingPrefabs';
+import { DataLoader } from './data/DataLoader';
+import { DataToLoad } from './data/DataToLoad';import { Factory } from './Factory';
+import { HUDCurrency } from './ui/HUDCurrency';
 import { PlayerModel } from './player/PlayerModel';
 import { PlayerViewModel } from './player/PlayerViewModel';
-import { HUDCurrency } from './ui/HUDCurrency';
-import { DataLoader } from './data/DataLoader';
-import { DataToLoad } from './data/DataToLoad';
-import { ModelFactory } from './factories/ModelFactory';
 const { ccclass, property } = _decorator;
 
 @ccclass('MainViewModel')
@@ -13,8 +13,14 @@ export class MainViewModel extends Component {
     @property(DataToLoad)
     private dataToLoad!: DataToLoad;
 
+    @property([BuildingPrefabs])
+    private buildingsPrefabs: BuildingPrefabs[] = [];
+
     @property(HUDCurrency)
     private hudCurrency!: HUDCurrency;
+
+    @property(Node)
+    private viewsParent!: Node;
 
     private playerModel! : PlayerModel;
     private playerViewModel! : PlayerViewModel;
@@ -37,11 +43,17 @@ export class MainViewModel extends Component {
         let playerState = DataLoader.loadPlayerState(this.dataToLoad.initialState);
         let buildingInfos = DataLoader.loadBuildingInfos(this.dataToLoad.buildings);
 
-        let modelFactory = new ModelFactory(buildingInfos);
+        let factory = new Factory(buildingInfos, this.buildingsPrefabs, this.viewsParent);
 
-        this.playerModel = new PlayerModel(playerState, modelFactory);
+        this.playerModel = new PlayerModel(playerState, factory);
         this.playerViewModel = new PlayerViewModel(this.playerModel);
         this.hudCurrency.init(this.playerViewModel);
+
+        for (var buildingModel of this.playerModel.buildingModels)
+        {
+            var viewModel = factory.createBuildingViewModel(buildingModel);
+            var view = factory.createBuildingView(viewModel);
+        }
     }
 }
 

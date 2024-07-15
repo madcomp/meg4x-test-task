@@ -3,11 +3,11 @@ import { PlayerModel } from "./PlayerModel";
 
 export class PlayerViewModel {
     
-    private innerSubject: BehaviorSubject<PlayerViewModel>;
+    private _subject: BehaviorSubject<PlayerViewModel>;
     private playerModel!: PlayerModel;
 
     constructor(parPlayerModel: PlayerModel) {
-        this.innerSubject = new BehaviorSubject<PlayerViewModel>(this);
+        this._subject = new BehaviorSubject<PlayerViewModel>(this);
         this.playerModel = parPlayerModel;
         this.playerModel.currencyChanges.subscribe(this.notify.bind(this));
     }
@@ -21,11 +21,11 @@ export class PlayerViewModel {
     }
 
     get subject() {
-        return this.innerSubject.asObservable();
+        return this._subject.asObservable();
     }
 
     private notify() {
-        this.innerSubject.next(this);
+        this._subject.next(this);
     }
 }
 

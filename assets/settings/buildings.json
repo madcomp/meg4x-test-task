@@ -5,6 +5,10 @@
             "name": "Hiring Tower of Heroes",
             "description": "A tower capable of hiring mighty heroes to fight alongside us",
             "cost": 100,
+            "position": {
+                "x": 2.769,
+                "y": -63.263
+            },
             "settings": {
                 "hireSlots": 5
             }

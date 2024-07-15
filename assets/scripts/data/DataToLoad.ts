@@ -4,11 +4,11 @@ const { ccclass, property } = _decorator;
 @ccclass('DataToLoad')
 export class DataToLoad {
     @property(JsonAsset)
-    initialState!: JsonAsset;
+    readonly initialState!: JsonAsset;
 
     @property(JsonAsset)
-    buildings!: JsonAsset;
+    readonly buildings!: JsonAsset;
 
     @property(JsonAsset)
-    heroes!: JsonAsset;
+    readonly heroes!: JsonAsset;
 }

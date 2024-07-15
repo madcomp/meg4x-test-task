@@ -1,4 +1,4 @@
-import { BuildingInfoHireTower } from "./BuildingInfoHireTower";
+import { BuildingInfoHireTower } from "./hireTower/BuildingInfoHireTower";
 
 export class BuildingInfos {
     constructor(

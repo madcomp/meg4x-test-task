@@ -4,11 +4,9 @@ import { PlayerModel } from "./PlayerModel";
 export class PlayerViewModel {
     
     private _subject: BehaviorSubject<PlayerViewModel>;
-    private playerModel!: PlayerModel;
 
-    constructor(parPlayerModel: PlayerModel) {
+    constructor(private playerModel: PlayerModel) {
         this._subject = new BehaviorSubject<PlayerViewModel>(this);
-        this.playerModel = parPlayerModel;
         this.playerModel.currencyChanges.subscribe(this.notify.bind(this));
     }
 

@@ -1,19 +1,19 @@
 import { BehaviorSubject } from 'rxjs';
-import { Factory } from '../Factory';
-import { PlayerState } from './PlayerState';
 import { IBuildingModel } from '../building/IBuildingModel';
+import { ModelViewModelFactory } from '../factory/ModelViewModelFactory';
+import { PlayerState } from './PlayerState';
 
 export class PlayerModel {
     
     private currencySubject: BehaviorSubject<number>;
     readonly buildingModels: IBuildingModel[];
 
-    constructor(playerState: PlayerState, factory: Factory) {
+    constructor(playerState: PlayerState, modelViewModelFactory: ModelViewModelFactory) {
         this.currencySubject = new BehaviorSubject<number>(playerState.currency);
         this.buildingModels = [];
         for (var buildingId of playerState.buildingIds)
         {
-            let buildingModel = factory.createBuildingModel(buildingId);
+            let buildingModel = modelViewModelFactory.createBuildingModel(buildingId);
             if (buildingModel != null)
             {
                 this.buildingModels.push(buildingModel);

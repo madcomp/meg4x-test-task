@@ -1,10 +1,13 @@
 import { _decorator, Component, Input, input, EventKeyboard, KeyCode, Node } from 'cc';
 import { BuildingPrefabs } from './building/BuildingPrefabs';
 import { DataLoader } from './data/DataLoader';
-import { DataToLoad } from './data/DataToLoad';import { Factory } from './Factory';
+import { DataToLoad } from './data/DataToLoad';
 import { HUDCurrency } from './ui/HUDCurrency';
+import { ModelViewModelFactory } from './factory/ModelViewModelFactory';
 import { PlayerModel } from './player/PlayerModel';
 import { PlayerViewModel } from './player/PlayerViewModel';
+import { UIManager } from './ui/UIManager';
+import { ViewFactory } from './factory/ViewFactory';
 const { ccclass, property } = _decorator;
 
 @ccclass('MainViewModel')
@@ -18,6 +21,9 @@ export class MainViewModel extends Component {
 
     @property(HUDCurrency)
     private hudCurrency!: HUDCurrency;
+
+    @property(Node)
+    private popupParent!: Node;
 
     @property(Node)
     private viewsParent!: Node;
@@ -43,16 +49,18 @@ export class MainViewModel extends Component {
         let playerState = DataLoader.loadPlayerState(this.dataToLoad.initialState);
         let buildingInfos = DataLoader.loadBuildingInfos(this.dataToLoad.buildings);
 
-        let factory = new Factory(buildingInfos, this.buildingsPrefabs, this.viewsParent);
+        let viewFactory = new ViewFactory(this.buildingsPrefabs, this.popupParent, this.viewsParent);
+        let uiManager = new UIManager(viewFactory);
+        let modelViewModelfactory = new ModelViewModelFactory(buildingInfos, uiManager);
 
-        this.playerModel = new PlayerModel(playerState, factory);
+        this.playerModel = new PlayerModel(playerState, modelViewModelfactory);
         this.playerViewModel = new PlayerViewModel(this.playerModel);
         this.hudCurrency.init(this.playerViewModel);
 
         for (var buildingModel of this.playerModel.buildingModels)
         {
-            var viewModel = factory.createBuildingViewModel(buildingModel);
-            var view = factory.createBuildingView(viewModel);
+            var viewModel = modelViewModelfactory.createBuildingViewModel(buildingModel);
+            viewFactory.createBuildingView(viewModel);
         }
     }
 }

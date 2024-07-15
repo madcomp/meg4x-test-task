@@ -4,6 +4,7 @@ import { PlayerViewModel } from './player/PlayerViewModel';
 import { HUDCurrency } from './ui/HUDCurrency';
 import { DataLoader } from './data/DataLoader';
 import { DataToLoad } from './data/DataToLoad';
+import { ModelFactory } from './factories/ModelFactory';
 const { ccclass, property } = _decorator;
 
 @ccclass('MainViewModel')
@@ -33,10 +34,12 @@ export class MainViewModel extends Component {
     }
 
     start() {
-        let dataLoader = new DataLoader();
-        dataLoader.load(this.dataToLoad);
-        this.playerModel = new PlayerModel(dataLoader.playerCurrency);
+        let playerState = DataLoader.loadPlayerState(this.dataToLoad.initialState);
+        let buildingInfos = DataLoader.loadBuildingInfos(this.dataToLoad.buildings);
 
+        let modelFactory = new ModelFactory(buildingInfos);
+
+        this.playerModel = new PlayerModel(playerState, modelFactory);
         this.playerViewModel = new PlayerViewModel(this.playerModel);
         this.hudCurrency.init(this.playerViewModel);
     }

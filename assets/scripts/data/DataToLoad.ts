@@ -12,4 +12,3 @@ export class DataToLoad {
     @property(JsonAsset)
     heroes!: JsonAsset;
 }
-

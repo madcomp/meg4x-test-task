@@ -1,33 +1,20 @@
 import { JsonAsset } from "cc";
-import { BuildingHireTowerInfo } from "../building/BuildingHireTowerInfo";
-import { DataToLoad } from "./DataToLoad";
+import { BuildingInfoHireTower } from "../building/BuildingInfoHireTower";
+import { BuildingInfos } from "../building/BuildingInfos";
+import { PlayerState } from "../player/PlayerState";
+import { BuildingIds } from "../Constants";
 
 export class DataLoader {
 
-    private _buildingHireTowerInfo!: BuildingHireTowerInfo;
-    private _playerCurrency: number = 0;
-
-    get buildingHireTowerInfo() : BuildingHireTowerInfo {
-        return this._buildingHireTowerInfo;
-    }
-
-    load(dataToLoad: DataToLoad) {
-        this.loadPlayer(dataToLoad.initialState);
-        this.loadBuildings(dataToLoad.buildings);
-    }
-
-    get playerCurrency() : number {
-        return this._playerCurrency;
-    }
-
-    private loadBuildings(buildingsJson: JsonAsset) {
+    static loadBuildingInfos(buildingsJson: JsonAsset) {
         const buildingsData = buildingsJson.json!;
         const buildings = buildingsData.buildings;
+        let buildingInfoHireTower: BuildingInfoHireTower | null = null;
         for (var building of buildings)
         {
-            if (building.id == "hire_tower")
+            if (building.id == BuildingIds.HireTower)
             {
-                this._buildingHireTowerInfo = new BuildingHireTowerInfo(
+                buildingInfoHireTower = new BuildingInfoHireTower(
                     building.id,
                     building.name,
                     building.description,
@@ -36,11 +23,19 @@ export class DataLoader {
                 );
             }
         }
+        if (buildingInfoHireTower == null)
+        {
+            throw new Error("No data for ${BuildingIds.HireTower} building in json file.");
+        }
+        return new BuildingInfos(buildingInfoHireTower);
     }
 
-    private loadPlayer(playerJson: JsonAsset) {
-        const playerData = playerJson.json!;
-        this._playerCurrency = playerData.state?.currency ?? 0;
+    static loadPlayerState(playerStateJson: JsonAsset) {
+        const playerStateData = playerStateJson.json!;
+        return new PlayerState(
+            playerStateData.state?.currency ?? 0,
+            playerStateData.state?.buildings ?? []
+        );
     }
 }
 

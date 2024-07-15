@@ -1,8 +1,8 @@
 export abstract class BuildingInfo {
     constructor(
-        public id: number,
-        public name: string,
-        public description: string,
-        public cost: number
+        public readonly id: number,
+        public readonly name: string,
+        public readonly description: string,
+        public readonly cost: number
     ) {}
 }

@@ -10,8 +10,8 @@ export abstract class BuildingPopupViewModel<T extends IBuildingModel> implement
         protected readonly gameInfo: GameInfo,
         protected readonly playerModel: PlayerModel,
         protected readonly uiManager: UIManager,
-        protected readonly model: T)
-    {}
+        protected readonly model: T) {
+    }
     
     abstract getDescription(): string;
 

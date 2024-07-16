@@ -70,7 +70,6 @@ export class BuildingPopupViewHireTower extends BuildingPopupView<BuildingPopupV
     }
 
     update(deltaTime: number) {
-        this.refreshButtonHire();
         this.refreshHireSlots();
     }
 
@@ -90,7 +89,7 @@ export class BuildingPopupViewHireTower extends BuildingPopupView<BuildingPopupV
         this.buildHireSlots();
         this.buildHeroOptions();
 
-        this.refresh();
+        this.viewModel.subject().subscribe(this.refresh.bind(this));
     }
 
     private buildHireSlots() {

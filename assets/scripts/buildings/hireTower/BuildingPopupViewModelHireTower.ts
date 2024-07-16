@@ -2,9 +2,24 @@ import { BuildingModelHireTower } from "./BuildingModelHireTower";
 import { BuildingPopupViewModel } from "../BuildingPopupViewModel";
 import { HeroInfo } from "../../heroes/HeroInfo";
 import { PlayerModel } from "../../player/PlayerModel";
+import { BehaviorSubject } from "rxjs";
+import { GameInfo } from "../../GameInfo";
+import { UIManager } from "../../ui/UIManager";
 
 export class BuildingPopupViewModelHireTower extends BuildingPopupViewModel<BuildingModelHireTower> {
     
+    private _subject!: BehaviorSubject<BuildingPopupViewModelHireTower>;
+
+    constructor(
+        protected readonly gameInfo: GameInfo,
+        protected readonly playerModel: PlayerModel,
+        protected readonly uiManager: UIManager,
+        protected readonly model: BuildingModelHireTower) {
+
+        super(gameInfo, playerModel, uiManager, model);
+        this._subject = new BehaviorSubject<BuildingPopupViewModelHireTower>(this);
+    }
+
     getDescription(): string {
         return this.model.info.description;
     }
@@ -44,6 +59,11 @@ export class BuildingPopupViewModelHireTower extends BuildingPopupViewModel<Buil
         }
         this.playerModel.pay(heroInfo.cost);
         this.model.startHiring(heroInfo);
+        this._subject.next(this);
+    }
+
+    subject(): BehaviorSubject<BuildingPopupViewModelHireTower> {
+        return this._subject;
     }
 }
 

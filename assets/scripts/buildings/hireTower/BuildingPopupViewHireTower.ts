@@ -70,6 +70,7 @@ export class BuildingPopupViewHireTower extends BuildingPopupView<BuildingPopupV
     }
 
     update(deltaTime: number) {
+        this.refreshButtonHire();
         this.refreshHireSlots();
     }
 
@@ -118,6 +119,22 @@ export class BuildingPopupViewHireTower extends BuildingPopupView<BuildingPopupV
         this.heroOptionParent.refresh();
     }
 
+    private isButtonHireEnabled()
+    {
+        if (!this.currentHeroInfo)
+        {
+            return false;
+        }
+
+        var canPay = this.viewModel.getPlayerModel().canPay(this.currentHeroInfo.cost);
+        if (!canPay)
+        {
+            return false;
+        }
+
+        return this.viewModel.hasFreeHireSlots();
+    }
+
     private onClickContainer(eventMouse: EventMouse) {
         eventMouse.propagationStopped = true;
     }
@@ -143,7 +160,6 @@ export class BuildingPopupViewHireTower extends BuildingPopupView<BuildingPopupV
         if (!this.currentHeroInfo)
         {
             this.heroPrice.active = false;
-            this.setButtonHireEnabled(false);
             return;
         }
 
@@ -151,7 +167,6 @@ export class BuildingPopupViewHireTower extends BuildingPopupView<BuildingPopupV
         this.heroPriceLabel.string = this.currentHeroInfo.cost.toString();
         
         var canPay = this.viewModel.getPlayerModel().canPay(this.currentHeroInfo.cost);
-        this.setButtonHireEnabled(canPay);
         var priceColor = canPay ? this.colorHasCurrency : this.colorNoCurrency;
         this.heroPriceLabel.color = priceColor;
 
@@ -167,7 +182,21 @@ export class BuildingPopupViewHireTower extends BuildingPopupView<BuildingPopupV
             }
         }
 
+        this.refreshButtonHire();
         this.refreshHireSlots();
+    }
+
+    private refreshButtonHire() {
+        if (this.isButtonHireEnabled())
+        {
+            this.buttonHire.interactable = true;
+            this.buttonHire.getComponent(Sprite)!.color = new Color(255, 255, 255, 255);
+        }
+        else
+        {
+            this.buttonHire.interactable = false;
+            this.buttonHire.getComponent(Sprite)!.color = new Color(255, 255, 255, 128);
+        }
     }
 
     private refreshHireSlots() {
@@ -180,19 +209,6 @@ export class BuildingPopupViewHireTower extends BuildingPopupView<BuildingPopupV
         for (let i = 0; i < this.hireSlots.length; i++)
         {
             this.hireSlots[i].setHeroInfo(this.viewModel.getHeroBeingHired(i));
-        }
-    }
-
-    private setButtonHireEnabled(buttonEnabled: boolean) {
-        if (buttonEnabled)
-        {
-            this.buttonHire.interactable = true;
-            this.buttonHire.getComponent(Sprite)!.color = new Color(255, 255, 255, 255);
-        }
-        else
-        {
-            this.buttonHire.interactable = false;
-            this.buttonHire.getComponent(Sprite)!.color = new Color(255, 255, 255, 128);
         }
     }
 }

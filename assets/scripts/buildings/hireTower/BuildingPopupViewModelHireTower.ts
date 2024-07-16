@@ -29,6 +29,10 @@ export class BuildingPopupViewModelHireTower extends BuildingPopupViewModel<Buil
         return this.model.info.name;
     }
 
+    hasFreeHireSlots(): boolean {
+        return this.model.hasFreeHireSlots();
+    }
+
     isHiringHeroes(): boolean {
         return this.model.isHiringHeroes();
     }

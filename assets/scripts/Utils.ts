@@ -2,6 +2,14 @@ import { Vec3 } from 'cc';
 
 export class Utils {
 
+    static capitalizeFirstLetter(text: string): string {
+        if (!text)
+        {
+            return text;
+        }
+        return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+    }
+
     static clamp(value: number, min: number, max: number): number {
         return Math.max(min, Math.min(max, value));
     }

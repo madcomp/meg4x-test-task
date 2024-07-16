@@ -20,6 +20,10 @@ export class BuildingModelHireTower extends BuildingModel<BuildingInfoHireTower>
         return null;
     }
 
+    hasFreeHireSlots(): boolean {
+        return this.heroesBeingHired.length < this.info.hireSlots;
+    }
+
     isHiringHeroes(): boolean {
         return this.heroesBeingHired.length > 0;
     }

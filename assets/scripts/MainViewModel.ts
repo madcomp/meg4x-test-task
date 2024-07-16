@@ -72,7 +72,7 @@ export class MainViewModel extends Component {
         let uiManager = new UIManager(this.playerModel, modelViewModelFactory, viewFactory);
 
         this.hudCurrency.init(new CurrencyViewModel(this.playerModel));
-        this.hudSignpost.init(uiManager, new SignpostViewModel(this.playerModel));
+        this.hudSignpost.init(uiManager, new SignpostViewModel(uiManager, this.playerModel));
 
         modelViewModelFactory.init(this.playerModel, uiManager);
 

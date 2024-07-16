@@ -1,12 +1,13 @@
 import { BehaviorSubject } from "rxjs";
 import { PlayerModel } from "./PlayerModel";
+import { UIManager } from "../ui/UIManager";
 
 export class SignpostViewModel {
     
     private _newHeroesCount = 0;
     private _subject: BehaviorSubject<SignpostViewModel>;
 
-    constructor(private playerModel: PlayerModel) {
+    constructor(private uiManager: UIManager, private playerModel: PlayerModel) {
         this._subject = new BehaviorSubject<SignpostViewModel>(this);
         this.playerModel.hiredHeroesChanges.subscribe(this.onNewHeroAdded.bind(this));
         this._newHeroesCount = 0;
@@ -17,6 +18,10 @@ export class SignpostViewModel {
     }
 
     private onNewHeroAdded() {
+        if (this.uiManager.isHeroesPopupViewVisible())
+        {
+            return;
+        }
         this._newHeroesCount++;
         this.notify();
     }

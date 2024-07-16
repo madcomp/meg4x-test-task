@@ -2,17 +2,22 @@ import { BuildingModelHireTower } from "../buildings/hireTower/BuildingModelHire
 import { ModelViewModelFactory } from "../factory/ModelViewModelFactory";
 import { ViewFactory } from "../factory/ViewFactory";
 import { PlayerModel } from "../player/PlayerModel";
+import { HeroesPopupView } from "./HeroesPopupView";
 import { PopupView } from "./PopupView";
 
 export class UIManager {
     
-    currentPopupView: PopupView | null = null;
+    private currentPopupView: PopupView | null = null;
 
     constructor(
         private playerModel: PlayerModel,
         private modelViewModelFactory: ModelViewModelFactory,
         private viewFactory: ViewFactory
     ) {}
+
+    isHeroesPopupViewVisible() {
+        return !!this.currentPopupView && this.currentPopupView instanceof HeroesPopupView;
+    }
 
     showBuildingPopupViewHireTower(buildingModelHireTower: BuildingModelHireTower) {
         if (!!this.currentPopupView)

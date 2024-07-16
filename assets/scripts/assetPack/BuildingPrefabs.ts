@@ -1,7 +1,4 @@
-import { _decorator, Component, Prefab } from 'cc';
-import { IBuildingViewModel } from './IBuildingViewModel';
-import { BuildingView } from './BuildingView';
-import { BuildingPopupView } from './BuildingPopupView';
+import { _decorator, Prefab } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('BuildingPrefabs')

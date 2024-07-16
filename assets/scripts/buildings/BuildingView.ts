@@ -5,16 +5,16 @@ const { ccclass } = _decorator;
 @ccclass('BuildingView')
 export abstract class BuildingView<T extends IBuildingViewModel> extends Component {
     
-    private buildingViewModel!: T;
+    private _viewModel!: T;
 
     init(viewModel: T) {
-        this.buildingViewModel = viewModel;
-        this.node.position = this.buildingViewModel.getPosition();
+        this._viewModel = viewModel;
+        this.node.position = this._viewModel.getPosition();
         this.onInit();
     }
 
     protected get viewModel(): T {
-        return this.buildingViewModel;
+        return this._viewModel;
     }
 
     protected abstract onInit(): void;

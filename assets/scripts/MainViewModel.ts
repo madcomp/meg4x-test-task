@@ -1,23 +1,20 @@
-import { _decorator, Component, Input, input, EventKeyboard, KeyCode, Node } from 'cc';
-import { BuildingPrefabs } from './building/BuildingPrefabs';
+import { _decorator, Component, Input, input, EventKeyboard, KeyCode, Node, SpriteFrame, Asset } from 'cc';
+import { BuildingPrefabs } from './assetPack/BuildingPrefabs';
 import { DataLoader } from './data/DataLoader';
 import { DataToLoad } from './data/DataToLoad';
+import { GameInfo } from './GameInfo';
 import { HUDCurrency } from './ui/HUDCurrency';
+import { IdSpriteFrame } from './assetPack/IdSpriteFrame';
 import { ModelViewModelFactory } from './factory/ModelViewModelFactory';
 import { PlayerModel } from './player/PlayerModel';
 import { PlayerViewModel } from './player/PlayerViewModel';
 import { UIManager } from './ui/UIManager';
 import { ViewFactory } from './factory/ViewFactory';
+import { AssetPack } from './assetPack/AssetPack';
 const { ccclass, property } = _decorator;
 
 @ccclass('MainViewModel')
 export class MainViewModel extends Component {
-
-    @property(DataToLoad)
-    private dataToLoad!: DataToLoad;
-
-    @property([BuildingPrefabs])
-    private buildingsPrefabs: BuildingPrefabs[] = [];
 
     @property(HUDCurrency)
     private hudCurrency!: HUDCurrency;
@@ -27,6 +24,21 @@ export class MainViewModel extends Component {
 
     @property(Node)
     private viewsParent!: Node;
+
+    @property(DataToLoad)
+    private dataToLoad!: DataToLoad;
+
+    @property([BuildingPrefabs])
+    private buildingsPrefabs: BuildingPrefabs[] = [];
+
+    @property([IdSpriteFrame])
+    private heroRankSpriteFrames: IdSpriteFrame[] = [];
+
+    @property([IdSpriteFrame])
+    private heroSpriteFrames: IdSpriteFrame[] = [];
+
+    @property([IdSpriteFrame])
+    private elementalTypeSpriteFrames: IdSpriteFrame[] = [];
 
     private playerModel! : PlayerModel;
     private playerViewModel! : PlayerViewModel;
@@ -46,13 +58,22 @@ export class MainViewModel extends Component {
     }
 
     start() {
-        let playerState = DataLoader.loadPlayerState(this.dataToLoad.initialState);
         let buildingInfos = DataLoader.loadBuildingInfos(this.dataToLoad.buildings);
+        let heroInfoById = DataLoader.loadHeroInfoById(this.dataToLoad.heroes);
+        let gameInfo = new GameInfo(buildingInfos, heroInfoById);
+        
+        let assetsPack = new AssetPack(
+            this.buildingsPrefabs,
+            this.heroSpriteFrames,
+            this.heroRankSpriteFrames,
+            this.elementalTypeSpriteFrames
+        );
 
-        let viewFactory = new ViewFactory(this.buildingsPrefabs, this.popupParent, this.viewsParent);
-        let uiManager = new UIManager(viewFactory);
-        let modelViewModelfactory = new ModelViewModelFactory(buildingInfos, uiManager);
+        let viewFactory = new ViewFactory(assetsPack, this.popupParent, this.viewsParent);
+        let uiManager = new UIManager(gameInfo, viewFactory);
+        let modelViewModelfactory = new ModelViewModelFactory(gameInfo, uiManager);
 
+        let playerState = DataLoader.loadPlayerState(this.dataToLoad.initialState);
         this.playerModel = new PlayerModel(playerState, modelViewModelfactory);
         this.playerViewModel = new PlayerViewModel(this.playerModel);
         this.hudCurrency.init(this.playerViewModel);
@@ -64,5 +85,3 @@ export class MainViewModel extends Component {
         }
     }
 }
-
-

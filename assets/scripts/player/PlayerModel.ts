@@ -1,5 +1,5 @@
 import { BehaviorSubject } from 'rxjs';
-import { IBuildingModel } from '../building/IBuildingModel';
+import { IBuildingModel } from '../buildings/IBuildingModel';
 import { ModelViewModelFactory } from '../factory/ModelViewModelFactory';
 import { PlayerState } from './PlayerState';
 

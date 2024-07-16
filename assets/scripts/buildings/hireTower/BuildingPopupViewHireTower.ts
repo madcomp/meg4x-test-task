@@ -160,6 +160,9 @@ export class BuildingPopupViewHireTower extends BuildingPopupView<BuildingPopupV
 
     private refresh() {
 
+        this.refreshButtonHire();
+        this.refreshHireSlots();
+
         if (!this.currentHeroInfo)
         {
             this.heroPrice.active = false;
@@ -184,9 +187,6 @@ export class BuildingPopupViewHireTower extends BuildingPopupView<BuildingPopupV
                 value.unhighlight();
             }
         }
-
-        this.refreshButtonHire();
-        this.refreshHireSlots();
     }
 
     private refreshButtonHire() {

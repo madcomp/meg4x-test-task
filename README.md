@@ -1,3 +1,7 @@
+# Hello Made on Earth Games!
+
+Sorry for being late on this. It was a very interesting test and the description was one of the most detailed I’ve seen for a problem like this. Thanks for that!
+
 # Game Developer Test Task
 
 Thank you for participating in this test!

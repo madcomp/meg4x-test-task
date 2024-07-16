@@ -1,5 +1,6 @@
 import { _decorator, Component, Label, Node } from 'cc';
 import { SignpostViewModel } from '../player/SignpostViewModel';
+import { UIManager } from './UIManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('HUDSignpost')
@@ -15,9 +16,11 @@ export class HUDSignpost extends Component {
     private labelCount!: Label;
 
     _signpostViewModel!: SignpostViewModel;
+    _uiManager!: UIManager;
 
-    init(signpostViewModel: SignpostViewModel) {
+    init(uiManager: UIManager, signpostViewModel: SignpostViewModel) {
         this._signpostViewModel = signpostViewModel;
+        this._uiManager = uiManager;
         signpostViewModel.subject.subscribe(this.refresh.bind(this));
         this.node.on(Node.EventType.MOUSE_DOWN, this.onClick, this);
         this.container.active = false;
@@ -32,6 +35,7 @@ export class HUDSignpost extends Component {
 
     private onClick() {
         this._signpostViewModel.resetNewHeroesCount();
+        this._uiManager.showHeroesPopupView();
     }
 }
 

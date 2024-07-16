@@ -6,6 +6,7 @@ import { IBuildingViewModel } from "../buildings/IBuildingViewModel";
 import { BuildingIds } from "../Constants";
 import { GameInfo } from "../GameInfo";
 import { HeroModel } from "../heroes/HeroModel";
+import { HeroesPopupViewModel } from "../player/HeroesPopupViewModel";
 import { PlayerModel } from "../player/PlayerModel";
 import { UIManager } from "../ui/UIManager";
 
@@ -36,6 +37,10 @@ export class ModelViewModelFactory {
             return new BuildingViewModelHireTower(this._uiManager, buildingModel);
         }
         throw new Error("No valid building view model for id=${buildingModel.getId()}.");
+    }
+
+    createHeroesPopupViewModel(playerModel: PlayerModel) {
+        return new HeroesPopupViewModel(playerModel);
     }
 
     createHeroModel(heroId: string): HeroModel | null {

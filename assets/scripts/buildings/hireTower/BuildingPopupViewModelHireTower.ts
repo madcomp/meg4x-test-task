@@ -4,6 +4,10 @@ import { HeroInfo } from "../../heroes/HeroInfo";
 import { PlayerModel } from "../../player/PlayerModel";
 
 export class BuildingPopupViewModelHireTower extends BuildingPopupViewModel<BuildingModelHireTower> {
+    
+    getDescription(): string {
+        return this.model.info.description;
+    }
 
     get dateStartedHiring() {
         return this.model.dateStartedHiring;
@@ -19,6 +23,10 @@ export class BuildingPopupViewModelHireTower extends BuildingPopupViewModel<Buil
 
     getHireSlots(): number {
         return this.model.info.hireSlots;
+    }
+
+    getTitle(): string {
+        return this.model.info.name;
     }
 
     isHiringHeroes(): boolean {

@@ -7,6 +7,9 @@ import { BuildingViewModelHireTower } from "../buildings/hireTower/BuildingViewM
 import { IBuildingPopupViewModel } from "../buildings/IBuildingPopupViewModel";
 import { IBuildingViewModel } from "../buildings/IBuildingViewModel";
 import { AssetPack } from "../assetPack/AssetPack";
+import { HeroesPopupViewModel } from "../player/HeroesPopupViewModel";
+import { HeroesPopupView } from "../ui/HeroesPopupView";
+import { PopupView } from "../ui/PopupView";
 
 export class ViewFactory {
 
@@ -16,7 +19,7 @@ export class ViewFactory {
         private viewsParent: Node,
     ) {}
 
-    createBuildingPopupView(buildingPopupViewModel: IBuildingPopupViewModel) {
+    createBuildingPopupView(buildingPopupViewModel: IBuildingPopupViewModel): PopupView {
         let buildingId = buildingPopupViewModel.getId();
         const prefabs = this.assetPack.prefabsByBuildingId.get(buildingId);
         
@@ -66,6 +69,13 @@ export class ViewFactory {
         }
 
         throw new Error("No building prefabs for id=${buildingId}.");
+    }
+
+    createHeroesPopupView(heroesPopupViewModel: HeroesPopupViewModel): PopupView {
+        let view = instantiate(this.assetPack.heroesPopupViewPrefab).getComponent(HeroesPopupView)!;
+        this.popupParent.addChild(view.node);
+        view.init(this.assetPack, heroesPopupViewModel);
+        return view;
     }
 
     private isBuildingPopupViewModelHireTower(viewModel: IBuildingPopupViewModel): viewModel is BuildingPopupViewModelHireTower {

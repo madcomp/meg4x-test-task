@@ -1,4 +1,4 @@
-import { SpriteFrame } from "cc";
+import { Prefab, SpriteFrame } from "cc";
 import { BuildingPrefabs } from "./BuildingPrefabs";
 import { IdSpriteFrame } from "./IdSpriteFrame";
 
@@ -11,6 +11,7 @@ export class AssetPack {
 
     constructor(
         buildingsPrefabs: BuildingPrefabs[],
+        public readonly heroesPopupViewPrefab: Prefab,
         heroSpriteFrames: IdSpriteFrame[],
         heroRankSpriteFrames: IdSpriteFrame[],
         elementalTypeSpriteFrames: IdSpriteFrame[]

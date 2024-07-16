@@ -2680,6 +2680,12 @@
     "heroPriceLabel": {
       "__id__": 83
     },
+    "labelTitle": {
+      "__id__": 26
+    },
+    "labelDescription": {
+      "__id__": 34
+    },
     "anchorFrom": {
       "__id__": 8
     },

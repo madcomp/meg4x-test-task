@@ -1,4 +1,4 @@
-import { _decorator, Component, Input, input, EventKeyboard, KeyCode, Node, SpriteFrame, Asset } from 'cc';
+import { _decorator, Component, Input, input, EventKeyboard, KeyCode, Node, SpriteFrame, Asset, Prefab } from 'cc';
 import { BuildingPrefabs } from './assetPack/BuildingPrefabs';
 import { DataLoader } from './data/DataLoader';
 import { DataToLoad } from './data/DataToLoad';
@@ -33,6 +33,9 @@ export class MainViewModel extends Component {
     @property(DataToLoad)
     private dataToLoad!: DataToLoad;
 
+    @property(Prefab)
+    private heroesPopupViewPrefab!: Prefab;
+
     @property([BuildingPrefabs])
     private buildingsPrefabs: BuildingPrefabs[] = [];
 
@@ -54,6 +57,7 @@ export class MainViewModel extends Component {
         
         let assetsPack = new AssetPack(
             this.buildingsPrefabs,
+            this.heroesPopupViewPrefab,
             this.heroSpriteFrames,
             this.heroRankSpriteFrames,
             this.elementalTypeSpriteFrames
@@ -61,13 +65,14 @@ export class MainViewModel extends Component {
 
         let modelViewModelFactory = new ModelViewModelFactory(gameInfo);
         let viewFactory = new ViewFactory(assetsPack, this.popupParent, this.viewsParent);
-        let uiManager = new UIManager(modelViewModelFactory, viewFactory);
 
         let playerState = DataLoader.loadPlayerState(this.dataToLoad.initialState);
         this.playerModel = new PlayerModel(playerState, modelViewModelFactory);
 
+        let uiManager = new UIManager(this.playerModel, modelViewModelFactory, viewFactory);
+
         this.hudCurrency.init(new CurrencyViewModel(this.playerModel));
-        this.hudSignpost.init(new SignpostViewModel(this.playerModel));
+        this.hudSignpost.init(uiManager, new SignpostViewModel(this.playerModel));
 
         modelViewModelFactory.init(this.playerModel, uiManager);
 

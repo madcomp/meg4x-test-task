@@ -13,9 +13,13 @@ export abstract class BuildingPopupViewModel<T extends IBuildingModel> implement
         protected readonly model: T)
     {}
     
+    abstract getDescription(): string;
+
     getId(): string {
         return this.model.getId();
     }
+
+    abstract getTitle(): string;
 
     getPlayerModel(): PlayerModel {
         return this.playerModel;

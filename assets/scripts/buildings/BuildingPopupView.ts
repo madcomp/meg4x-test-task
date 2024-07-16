@@ -1,17 +1,14 @@
 import { _decorator, Component } from 'cc';
 import { AssetPack } from '../assetPack/AssetPack';
 import { IBuildingPopupViewModel } from './IBuildingPopupViewModel';
+import { PopupView } from '../ui/PopupView';
 const { ccclass } = _decorator;
 
 @ccclass('BuildingPopupView')
-export abstract class BuildingPopupView<T extends IBuildingPopupViewModel> extends Component {
+export abstract class BuildingPopupView<T extends IBuildingPopupViewModel> extends PopupView {
     
     private _assetPack!: AssetPack;
     private _viewModel!: T;
-
-    close() {
-        this.node.destroy();
-    }
 
     init(assetPack: AssetPack, viewModel: T) {
         this._assetPack = assetPack;

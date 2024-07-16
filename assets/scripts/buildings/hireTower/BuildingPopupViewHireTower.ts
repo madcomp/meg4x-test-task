@@ -37,6 +37,12 @@ export class BuildingPopupViewHireTower extends BuildingPopupView<BuildingPopupV
     @property(Label)
     private heroPriceLabel!: Label;
 
+    @property(Label)
+    private labelTitle!: Label;
+
+    @property(Label)
+    private labelDescription!: Label;
+
     @property(Node)
     private anchorFrom!: Node;
 
@@ -71,6 +77,9 @@ export class BuildingPopupViewHireTower extends BuildingPopupView<BuildingPopupV
         
         this.container.on(Node.EventType.MOUSE_DOWN, this.onClickContainer, this);
         this.overlay.on(Node.EventType.MOUSE_DOWN, this.onClickOverlay, this);
+
+        this.labelTitle.string = this.viewModel.getTitle();
+        this.labelDescription.string = this.viewModel.getDescription();
 
         this.container.position = this.anchorFrom.position;
         tween(this.container)

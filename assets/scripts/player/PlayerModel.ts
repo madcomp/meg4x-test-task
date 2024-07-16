@@ -1,4 +1,4 @@
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { IBuildingModel } from '../buildings/IBuildingModel';
 import { ModelViewModelFactory } from '../factory/ModelViewModelFactory';
 import { PlayerState } from './PlayerState';
@@ -54,7 +54,7 @@ export class PlayerModel {
         }
     }
 
-    get currencyChanges() {
+    get currencyChanges(): Observable<number> {
         return this.currencySubject.asObservable();
     }
 
@@ -67,7 +67,7 @@ export class PlayerModel {
         }
     }
 
-    get hiredHeroesChanges() {
+    get hiredHeroesChanges(): Observable<number> {
         return this.hiredHeroesSubject.asObservable();
     }
 

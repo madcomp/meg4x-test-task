@@ -62,6 +62,10 @@ export class BuildingPopupViewHireTower extends BuildingPopupView<BuildingPopupV
     private heroOptionByHeroInfo!: Map<HeroInfo, HeroOption>;
     private hireSlots!: HireSlot[];
 
+    onDestroy(): void {
+        this.viewModel.onDestroy();
+    }
+
     onHireHeroButtonPressed() {
         if (!!this.currentHeroInfo)
         {

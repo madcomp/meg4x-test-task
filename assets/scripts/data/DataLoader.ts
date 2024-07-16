@@ -22,7 +22,7 @@ export class DataLoader {
                     building.description,
                     building.cost,
                     Utils.objectToVec3(building.position),
-                    building.hireSlots
+                    building.settings.hireSlots
                 );
             }
         }
@@ -57,7 +57,8 @@ export class DataLoader {
         const playerStateData = playerStateJson.json!;
         return new PlayerState(
             playerStateData.state?.currency ?? 0,
-            playerStateData.state?.buildings ?? []
+            playerStateData.state?.buildings ?? [],
+            playerStateData.state?.heroes ?? []
         );
     }
 }

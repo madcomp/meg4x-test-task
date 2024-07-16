@@ -11,6 +11,7 @@ import { PlayerViewModel } from './player/PlayerViewModel';
 import { UIManager } from './ui/UIManager';
 import { ViewFactory } from './factory/ViewFactory';
 import { AssetPack } from './assetPack/AssetPack';
+import { PopupViewModelFactory } from './factory/PopupViewModelFactory';
 const { ccclass, property } = _decorator;
 
 @ccclass('MainViewModel')
@@ -69,19 +70,25 @@ export class MainViewModel extends Component {
             this.elementalTypeSpriteFrames
         );
 
+        let modelViewModelFactory = new ModelViewModelFactory(gameInfo);
         let viewFactory = new ViewFactory(assetsPack, this.popupParent, this.viewsParent);
-        let uiManager = new UIManager(gameInfo, viewFactory);
-        let modelViewModelfactory = new ModelViewModelFactory(gameInfo, uiManager);
+        let uiManager = new UIManager(modelViewModelFactory, viewFactory);
 
         let playerState = DataLoader.loadPlayerState(this.dataToLoad.initialState);
-        this.playerModel = new PlayerModel(playerState, modelViewModelfactory);
+        this.playerModel = new PlayerModel(playerState, modelViewModelFactory);
         this.playerViewModel = new PlayerViewModel(this.playerModel);
         this.hudCurrency.init(this.playerViewModel);
 
+        modelViewModelFactory.init(this.playerModel, uiManager);
+
         for (var buildingModel of this.playerModel.buildingModels)
         {
-            var viewModel = modelViewModelfactory.createBuildingViewModel(buildingModel);
+            var viewModel = modelViewModelFactory.createBuildingViewModel(buildingModel);
             viewFactory.createBuildingView(viewModel);
         }
+    }
+
+    update(deltaTime: number) {
+        this.playerModel.update(deltaTime);
     }
 }

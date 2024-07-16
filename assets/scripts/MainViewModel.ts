@@ -7,11 +7,12 @@ import { HUDCurrency } from './ui/HUDCurrency';
 import { IdSpriteFrame } from './assetPack/IdSpriteFrame';
 import { ModelViewModelFactory } from './factory/ModelViewModelFactory';
 import { PlayerModel } from './player/PlayerModel';
-import { PlayerViewModel } from './player/PlayerViewModel';
 import { UIManager } from './ui/UIManager';
 import { ViewFactory } from './factory/ViewFactory';
 import { AssetPack } from './assetPack/AssetPack';
-import { PopupViewModelFactory } from './factory/PopupViewModelFactory';
+import { CurrencyViewModel } from './player/CurrencyViewModel';
+import { HUDSignpost } from './ui/HUDSignpost';
+import { SignpostViewModel } from './player/SignpostViewModel';
 const { ccclass, property } = _decorator;
 
 @ccclass('MainViewModel')
@@ -19,6 +20,9 @@ export class MainViewModel extends Component {
 
     @property(HUDCurrency)
     private hudCurrency!: HUDCurrency;
+
+    @property(HUDSignpost)
+    private hudSignpost!: HUDSignpost;
 
     @property(Node)
     private popupParent!: Node;
@@ -42,21 +46,6 @@ export class MainViewModel extends Component {
     private elementalTypeSpriteFrames: IdSpriteFrame[] = [];
 
     private playerModel! : PlayerModel;
-    private playerViewModel! : PlayerViewModel;
-
-    onLoad() {
-        input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
-    }
-    
-    onDestroy() {
-        input.off(Input.EventType.KEY_DOWN, this.onKeyDown, this);
-    }
-    
-    onKeyDown(event: EventKeyboard) {
-        if (event.keyCode == KeyCode.KEY_Z) {
-            this.playerViewModel.spendCurrency(10);
-        }
-    }
 
     start() {
         let buildingInfos = DataLoader.loadBuildingInfos(this.dataToLoad.buildings);
@@ -76,8 +65,9 @@ export class MainViewModel extends Component {
 
         let playerState = DataLoader.loadPlayerState(this.dataToLoad.initialState);
         this.playerModel = new PlayerModel(playerState, modelViewModelFactory);
-        this.playerViewModel = new PlayerViewModel(this.playerModel);
-        this.hudCurrency.init(this.playerViewModel);
+
+        this.hudCurrency.init(new CurrencyViewModel(this.playerModel));
+        this.hudSignpost.init(new SignpostViewModel(this.playerModel));
 
         modelViewModelFactory.init(this.playerModel, uiManager);
 

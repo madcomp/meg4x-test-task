@@ -1,12 +1,12 @@
 import { BehaviorSubject } from "rxjs";
 import { PlayerModel } from "./PlayerModel";
 
-export class PlayerViewModel {
+export class CurrencyViewModel {
     
-    private _subject: BehaviorSubject<PlayerViewModel>;
+    private _subject: BehaviorSubject<CurrencyViewModel>;
 
     constructor(private playerModel: PlayerModel) {
-        this._subject = new BehaviorSubject<PlayerViewModel>(this);
+        this._subject = new BehaviorSubject<CurrencyViewModel>(this);
         this.playerModel.currencyChanges.subscribe(this.notify.bind(this));
     }
 

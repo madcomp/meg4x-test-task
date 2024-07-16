@@ -8,11 +8,13 @@ import { HeroModel } from '../heroes/HeroModel';
 export class PlayerModel {
     
     private currencySubject: BehaviorSubject<number>;
+    private hiredHeroesSubject: BehaviorSubject<number>;
     readonly buildingModels: IBuildingModel[];
     readonly heroModels: HeroModel[];
 
     constructor(playerState: PlayerState, private modelViewModelFactory: ModelViewModelFactory) {
         this.currencySubject = new BehaviorSubject<number>(playerState.currency);
+        this.hiredHeroesSubject = new BehaviorSubject<number>(playerState.heroIds.length);
         this.buildingModels = [];
         for (var buildingId of playerState.buildingIds)
         {
@@ -61,7 +63,12 @@ export class PlayerModel {
         if (heroModel != null)
         {
             this.heroModels.push(heroModel);
+            this.hiredHeroesSubject.next(this.heroModels.length);
         }
+    }
+
+    get hiredHeroesChanges() {
+        return this.hiredHeroesSubject.asObservable();
     }
 
     update(deltaTime: number) {
